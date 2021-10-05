@@ -15,7 +15,7 @@ import {
   ApprovalForAll1,
   Transfer
 } from "../generated/Contract/Contract"
-import { getOrCreateUser, getUserGotchis } from "./helper"
+import { changeOwnerOf, getOrCreateAavegotchi, getOrCreateUser, getUserGotchis, linkGotchiToUser } from "./helper"
 
 // export function handleERC1155SendToBridge(event: ERC1155SendToBridge): void {
 //   // Entities can be loaded from the store using a string ID; this ID
@@ -77,7 +77,11 @@ import { getOrCreateUser, getUserGotchis } from "./helper"
 // }
 
 export function handleERC721SendToBridge(event: ERC721SendToBridge): void {
-  let user = getOrCreateUser(event.transaction.from);
+  let user = getOrCreateUser(event.params.receiver);
+  for(let i=0; i<event.params.ids.length; i++) {
+    let gotchi = getOrCreateAavegotchi(event.params.ids[i]);
+    linkGotchiToUser(gotchi, user);
+  }
 }
 
 export function handleDiamondCut(event: DiamondCut): void {}
@@ -86,15 +90,17 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
 export function handleApprovalForAll(event: ApprovalForAll): void {
     let user = getOrCreateUser(event.params._owner);
-    // let gotchis = getUserGotchis(user);
-    // for(let i=0;i<gotchis.length;i++) {
-    //   log.info(gotchis[i].toString(), [])
-    // }
+    let gotchis = getUserGotchis(user);
+    for(let i=0;i<gotchis.length;i++) {
+      let gotchi = getOrCreateAavegotchi(gotchis[i]);
+      linkGotchiToUser(gotchi, user);
+    }
 
 
 }
 
-export function handleTransferBatch(event: TransferBatch): void {}
+export function handleTransferBatch(event: TransferBatch): void {
+}
 
 export function handleTransferFromParent(event: TransferFromParent): void {}
 
@@ -106,8 +112,12 @@ export function handleURI(event: URI): void {}
 
 export function handleApproval(event: Approval): void {
   let user = getOrCreateUser(event.params._owner);
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId);
+  linkGotchiToUser(gotchi, user);
 }
 
-export function handleApprovalForAll1(event: ApprovalForAll1): void {}
-
-export function handleTransfer(event: Transfer): void {}
+export function handleTransfer(event: Transfer): void {
+  let newUser = getOrCreateUser(event.params._to);
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId);
+  changeOwnerOf(gotchi, newUser);
+}
