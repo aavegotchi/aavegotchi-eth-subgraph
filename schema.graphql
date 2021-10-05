@@ -1,6 +1,9 @@
-type ExampleEntity @entity {
+type User @entity {
   id: ID!
-  count: BigInt!
-  depositor: Bytes! # address
-  receiver: Bytes! # address
+  gotchisOwned: [Aavegotchi!]! @derivedFrom(field: "owner")
+}
+
+type Aavegotchi @entity {
+  id: ID!
+  owner: User
 }
