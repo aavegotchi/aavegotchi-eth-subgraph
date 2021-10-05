@@ -1,0 +1,59 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Contract
+    network: mainnet
+    source:
+      address: "0x1906fd9c4ac440561f7197da0a4bd2e88df5fa70"
+      abi: Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - ERC1155SendToBridge
+        - ERC721SendToBridge
+        - DiamondCut
+        - OwnershipTransferred
+        - ApprovalForAll
+        - TransferBatch
+        - TransferFromParent
+        - TransferSingle
+        - TransferToParent
+        - URI
+        - Approval
+        - ApprovalForAll1
+        - Transfer
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: ERC1155SendToBridge(indexed address,indexed address,uint256[],uint256[])
+          handler: handleERC1155SendToBridge
+        - event: ERC721SendToBridge(indexed address,indexed address,uint256[])
+          handler: handleERC721SendToBridge
+        - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
+          handler: handleDiamondCut
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferFromParent(indexed address,indexed uint256,indexed uint256,uint256)
+          handler: handleTransferFromParent
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferToParent(indexed address,indexed uint256,indexed uint256,uint256)
+          handler: handleTransferToParent
+        - event: URI(string,indexed uint256)
+          handler: handleURI
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll1
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
