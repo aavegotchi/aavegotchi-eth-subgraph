@@ -10,8 +10,6 @@ type Aavegotchi @entity {
 
 type Statistic @entity {
   id: ID!
-  totalAavegotchisBridged: BigInt!
-  totalUsersWithAavegotchis: BigInt!
-  currentAavegotchisBridged: BigInt!
-  currentUsersWithBridgedGotchis: BigInt!
+  bridgedGotchis: BigInt!
+  uniqueUsers: BigInt!
 }
