@@ -1,9 +1,17 @@
 type User @entity {
   id: ID!
-  gotchisOwned: [Aavegotchi!]! @derivedFrom(field: "owner")
+  gotchisOwned: [Aavegotchi!] @derivedFrom(field: "owner")
 }
 
 type Aavegotchi @entity {
   id: ID!
   owner: User
+}
+
+type Statistic @entity {
+  id: ID!
+  totalAavegotchisBridged: BigInt!
+  totalUsersWithAavegotchis: BigInt!
+  currentAavegotchisBridged: BigInt!
+  currentUsersWithBridgedGotchis: BigInt!
 }
