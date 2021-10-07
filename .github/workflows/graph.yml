@@ -35,7 +35,7 @@ jobs:
           clean: false
       - name: Deploy to TheGraph and sync with Stakesquid
         run: |
-          export deploymentId=`graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-ethereum subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ | grep -oP 'Qm[1-9A-HJ-NP-Za-km-z]{44}'`
+          export deploymentId=`graph deploy --product hosted-service --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-ethereum subgraph.yaml | grep -oP 'Qm[1-9A-HJ-NP-Za-km-z]{44}'`
           echo $deploymentId
           cd offchain-subgraph
           git config --global user.email "mail@aavegotchi.com"
